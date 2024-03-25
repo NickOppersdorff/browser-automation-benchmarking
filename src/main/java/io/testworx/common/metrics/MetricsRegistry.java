@@ -11,8 +11,8 @@ import java.net.InetSocketAddress;
 
 public class MetricsRegistry {
     //create a singleton instance of the MetricsRegistry
-    private static MetricsRegistry instance = new MetricsRegistry();
-    private PrometheusMeterRegistry registry;
+    private static final MetricsRegistry instance = new MetricsRegistry();
+    private final PrometheusMeterRegistry registry;
     private HttpServer server;
     //private constructor to prevent instantiation
     private MetricsRegistry() {

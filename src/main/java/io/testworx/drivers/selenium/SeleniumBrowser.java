@@ -30,14 +30,12 @@ public class SeleniumBrowser extends Browser {
     public void open(String browserName) {
         this.browserName = browserName;
         MetricsRegistry.getInstance().timer("browser.open", "framework", driverProtocol, "browser", browserName).record(() -> {
-            if (browserName.equals("chrome")) {
-                switch(browserName) {
-                    case "chrome":
-                        browser = new ChromeDriver();
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Invalid browser name");
-                }
+            switch(browserName) {
+                case "chrome":
+                    browser = new ChromeDriver();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid browser name");
             }
         });
     }

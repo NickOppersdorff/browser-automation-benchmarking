@@ -8,6 +8,7 @@ import io.micrometer.prometheus.PrometheusMeterRegistry;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.time.Instant;
 
 public class MetricsRegistry {
     //create a singleton instance of the MetricsRegistry
@@ -17,7 +18,7 @@ public class MetricsRegistry {
     //private constructor to prevent instantiation
     private MetricsRegistry() {
          registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-
+        registry.config().commonTags("testRun", Instant.now().toString());
         startRegistry(registry);
     }
 

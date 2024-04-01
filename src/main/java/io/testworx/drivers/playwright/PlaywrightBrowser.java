@@ -36,7 +36,7 @@ public class PlaywrightBrowser extends Browser {
 
     @Override
     public void close() {
-        MetricsRegistry.getInstance().timer("browser.close", "framework", driverProtocol).record(() ->
+        MetricsRegistry.getInstance().timer("browser.close", "framework", driverProtocol, "browser", browserName).record(() ->
                 browser.close()
         );
     }
@@ -44,7 +44,7 @@ public class PlaywrightBrowser extends Browser {
     @Override
     public Locator find(String cssLocator) {
         AtomicReference<Locator> element = new AtomicReference<>();
-        MetricsRegistry.getInstance().timer("browser.find", "framework", driverProtocol, "selector", cssLocator).record(() ->
+        MetricsRegistry.getInstance().timer("browser.find", "framework", driverProtocol, "selector", cssLocator, "browser", browserName).record(() ->
                 element.set(page.locator(cssLocator))
         );
         return element.get();
@@ -53,7 +53,7 @@ public class PlaywrightBrowser extends Browser {
     @Override
     public <T> void click(T element) {
         Locator webElement = (Locator) element;
-        MetricsRegistry.getInstance().timer("browser.click", "framework", driverProtocol).record(() ->
+        MetricsRegistry.getInstance().timer("browser.click", "framework", driverProtocol, "browser", browserName).record(() ->
                 webElement.click()
         );
     }
@@ -61,7 +61,7 @@ public class PlaywrightBrowser extends Browser {
     @Override
     public <T> void type(T element, String text) {
         Locator webElement = (Locator) element;
-        MetricsRegistry.getInstance().timer("browser.type", "framework", driverProtocol).record(() ->
+        MetricsRegistry.getInstance().timer("browser.type", "framework", driverProtocol, "browser", browserName).record(() ->
                 webElement.fill(text)
         );
     }
@@ -69,7 +69,7 @@ public class PlaywrightBrowser extends Browser {
     @Override
     public void navigateTo(String url) {
         page = browser.newPage();
-        MetricsRegistry.getInstance().timer("browser.navigate", "framework", driverProtocol).record(() ->
+        MetricsRegistry.getInstance().timer("browser.navigate", "framework", driverProtocol, "browser", browserName).record(() ->
                 page.navigate(url)
         );
     }

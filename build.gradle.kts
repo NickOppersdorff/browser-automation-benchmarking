@@ -35,9 +35,6 @@ dependencies {
 
     //Playwright
     implementation("com.microsoft.playwright:playwright:1.42.0")
-
-
-
 }
 
 tasks {

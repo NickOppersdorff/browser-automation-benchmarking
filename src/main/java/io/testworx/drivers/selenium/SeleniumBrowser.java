@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -20,7 +22,7 @@ public class SeleniumBrowser extends Browser {
     @Override
     public WebElement find(String cssLocator) {
         AtomicReference<WebElement> element = new AtomicReference<>();
-        MetricsRegistry.getInstance().timer("browser.find", "framework", driverProtocol, "selector", cssLocator).record(() ->
+        MetricsRegistry.getInstance().timer("browser.find", "framework", driverProtocol, "selector", cssLocator, "browser", browserName).record(() ->
                 element.set(browser.findElement(By.cssSelector(cssLocator)))
         );
         return element.get();
@@ -34,6 +36,9 @@ public class SeleniumBrowser extends Browser {
                 case "chrome":
                     browser = new ChromeDriver();
                     break;
+                case "chrome_with_managed_service":
+                    browser = new RemoteWebDriver(ChromeDriverServiceManager.getInstance().service.getUrl(), new ChromeOptions());
+                    break;
                 default:
                     throw new IllegalArgumentException("Invalid browser name");
             }
@@ -42,7 +47,7 @@ public class SeleniumBrowser extends Browser {
 
     @Override
     public void close() {
-        MetricsRegistry.getInstance().timer("browser.close", "framework", driverProtocol).record(() ->
+        MetricsRegistry.getInstance().timer("browser.close", "framework", driverProtocol, "browser", browserName).record(() ->
                 browser.quit()
         );
     }
@@ -50,7 +55,7 @@ public class SeleniumBrowser extends Browser {
     @Override
     public <T> void click(T element) {
         WebElement webElement = (WebElement) element;
-        MetricsRegistry.getInstance().timer("browser.click", "framework", driverProtocol).record(() ->
+        MetricsRegistry.getInstance().timer("browser.click", "framework", driverProtocol, "browser", browserName).record(() ->
                 webElement.click()
         );
     }
@@ -58,14 +63,14 @@ public class SeleniumBrowser extends Browser {
     @Override
     public <T> void type(T element, String text) {
         WebElement webElement = (WebElement) element;
-        MetricsRegistry.getInstance().timer("browser.type", "framework", driverProtocol).record(() ->
+        MetricsRegistry.getInstance().timer("browser.type", "framework", driverProtocol, "browser", browserName).record(() ->
                 webElement.sendKeys(text)
         );
     }
 
     @Override
     public void navigateTo(String url) {
-        MetricsRegistry.getInstance().timer("browser.navigate", "framework", driverProtocol).record(() ->
+        MetricsRegistry.getInstance().timer("browser.navigate", "framework", driverProtocol, "browser", browserName).record(() ->
                 browser.get(url)
         );
     }

@@ -39,6 +39,11 @@ public class SeleniumBrowser extends Browser {
                 case "chrome_with_managed_service":
                     browser = new RemoteWebDriver(ChromeDriverServiceManager.getInstance().service.getUrl(), new ChromeOptions());
                     break;
+                case "chrome_headless_with_managed_service":
+                    ChromeOptions options = new ChromeOptions();
+                    options.addArguments("--headless=new");
+                    browser = new RemoteWebDriver(ChromeDriverServiceManager.getInstance().service.getUrl(), options);
+                    break;
                 default:
                     throw new IllegalArgumentException("Invalid browser name");
             }

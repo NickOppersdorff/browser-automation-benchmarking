@@ -18,7 +18,7 @@ class BenchmarkTest extends Specification {
         ChromeDriverServiceManager.instance.startService()
     }
 
-    @RepeatUntilFailure(maxAttempts = 25)
+    @RepeatUntilFailure(maxAttempts = 25, ignoreRest = false)
     def "Benchmark Test"() {
         expect:
         MetricsRegistry.getInstance().timer("benchmark.test", "framework", browser.getDriverProtocol(), "browser", browserName).record(() -> {
@@ -37,6 +37,7 @@ class BenchmarkTest extends Specification {
         browser                 | browserName
         new SeleniumBrowser()   | 'chrome'
         new SeleniumBrowser()   | 'chrome_with_managed_service'
+        new SeleniumBrowser()   | 'chrome_headless_with_managed_service'
         new PlaywrightBrowser() | 'chrome'
     }
 
